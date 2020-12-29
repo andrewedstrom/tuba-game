@@ -10,7 +10,7 @@ function _init()
 		w=16,
 		h=16,
 		t=0,
-		ti=16, --timer interval
+		ti=20, --timer interval
 		walking=true,
 		facing_left=false,
 		next_walk_sound=0,
