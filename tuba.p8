@@ -13,7 +13,8 @@ function _init()
 		h=16,
 		t=0,
 		ti=20, --timer interval
-		walking=true,
+		is_moving=true,
+		is_floating=false,
 		walk_speed=0.4,
 		facing_left=false,
 		on_ground=false,
@@ -21,48 +22,48 @@ function _init()
 		walk_melody={0,1,0,1,0,1,2,1,0,1,0,1,0,1,3,1},
 		update=function(self)
 			self.t=(self.t+1)%self.ti
-			
+
 			self.dx*=0.8  --friction
-			self.walking=false
+			self.is_moving=false
 			if self.y < 128-self.h then
 				if btn(⬅️) then
 					self.dx-=self.walk_speed
 					self.facing_left=true
-					if (self.on_ground) self.walking=true
+					if (self.on_ground) self.is_moving=true
 				elseif btn(➡️) then
 					self.dx+=self.walk_speed
 					self.facing_left=false
-					if (self.on_ground) self.walking=true
+					if (self.on_ground) self.is_moving=true
 				end
 			end
-			
+
 			self.dy+=0.3 --gravity
 			if btnp(❎) and self.on_ground then
 				self.on_ground=false
 				sfx(4)
 				self.dy=-4
 			end
-			
+
 			if hit_solid_block(self.x+self.dx,self.y,self.w-1,self.h-1) then
 				self.dx=0
 			end
-			
+
 			if hit_solid_block(self.x,self.y+self.dy,self.w-1,self.h-1) then
 				if self.dy>0 then
 					self.on_ground=true
 				end
 				self.dy=0
 			end
-			
+
 			max_speed=5
 			self.dx=mid(-max_speed,self.dx,max_speed)
 			self.dy=mid(-max_speed,self.dy,max_speed)
 			self.x+=self.dx
 			self.x=max(0,self.x)
 			self.y+=self.dy
-			
-			-- walking sound
-			if self.walking and self.on_ground then
+
+			-- is_moving sound
+			if self.is_moving and self.on_ground then
 				if self.t==0 then
 					sfx(self.walk_melody[self.walk_i+1])
 					self.walk_i+=1
@@ -75,11 +76,11 @@ function _init()
 			palt(6,true)
 			local sx=104
 			local sy=0
-			if self.walking and self.t>self.ti/2 then
+			if self.is_moving and self.t>self.ti/2 then
 				sx=8
 				sy=16
 			end
-			
+
 			sspr(sx,sy,self.w,self.h,self.x,self.y,self.w,self.h,self.facing_left)
 		end
 	}
@@ -146,7 +147,7 @@ __gfx__
 000000006aa0000006a66666000000000daaf0ffff00a7660daaf0ffff00a7660000000000000000000000000000000000000000000000000000000000000000
 00000000aa000ff0f0a66666000000000da0a09f0000a7660da0a09f0000a7660000000000000000000000000000000000000000000000000000000000000000
 00000000aa0f0ff0f06666666666666660a6a6afff06aa6660a6a6afff06aa660000000000000000000000000000000000000000000000000000000000000000
-00000000aa0ffffff066666666666666666aaa60006aaa76666aaa60006aaa760000000000000000000000000000000000000000000000000000000000000000
+00000000aa0ffffff066666666666666666aaa60006aaa76666aaa60006aaaa60000000000000000000000000000000000000000000000000000000000000000
 000000007a00fff9a666666666666666666666666aaaaaaa666666666aaaaaaa0000000000000000000000000000000000000000000000000000000000000000
 000000007aa000006a66666666444466666666666666666666666666666767760000000000000000000000000000000000000000000000000000000000000000
 0000000067a0affaaa66666664744746666666666666666666666666667667670000000000000000000000000000000000000000000000000000000000000000
