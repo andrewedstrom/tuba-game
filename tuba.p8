@@ -49,8 +49,8 @@ function _init()
 				end
 			end
 
-			if btn(❎) and self.is_floating then
-				self.dy-=0.281
+			if btn(❎) and self.is_floating and self.dy > -1 then
+				self.dy=self.dy-0.280
 			end
 
 			if hit_solid_block(self.x+self.dx,self.y,self.w-1,self.h-1) then
@@ -66,8 +66,8 @@ function _init()
 			end
 
 			max_speed=5
-			self.dx=mid(-max_speed,self.dx,max_speed)
-			self.dy=mid(-max_speed,self.dy,max_speed)
+			self.dx=mid(-4,self.dx,max_speed)
+			self.dy=mid(-4,self.dy,max_speed)
 			self.x+=self.dx
 			self.x=max(0,self.x)
 			self.y+=self.dy
